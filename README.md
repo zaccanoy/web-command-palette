@@ -1,83 +1,91 @@
 # Web Command Palette
 
+```
+This library is in pre-release - this document
+describes how to interface with the
+future release version of the API.
+```
+
 Web Command Palette is an API, web extension, UI, and tinkering interface for keyboard shortcuts on the web.
-
-# Use Cases
-
-## PWA, Website, and Electron Apps
-
-Web Command Palette is perfect for your web app.
-
-- As more web apps use this library, users will become accustomed to the Command Palette shortcut, or <kbd>cmd</kbd> + <kbd>shift</kbd> + <kbd>p</kbd> to discover new commands.
-- You'll never have to worry about your keyboard shortcut conflicting with another one handled by Web Command Palette.
-- In the future, you'll have an even better developer experience, as documentation and warnings regarding common OS- and app-specific keyboard shortcuts will allow for warnings when you're using a shortcut that a lot of users may need to remap.
-
-## Web Extensions and Userscripts
-
-Web Command Palette makes it very easy to implement functionality that will be prompted by the user. Imagine you want to make an extension that allows users to hide elements on websites they visit. You could simply supply Web Command Palette a callback that invokes your functionality at keypress.
-
-- Allow easy user management of your extension's keyboard shortcuts.
-- Provide extenstions that utilize simple keypresses to invoke their functionality.
-- Write simple userscripts that others can use without worrying about if you picked the right keyboard shortcut.
 
 # Installation
 
-Currently, this library is still in development. Once a stable version is ready, you should be able to install it with `npm install web-command-palette` or with any other package manager for all your web development needs.
+In a browser:
 
-# Usage
+```html
+<script src="web-command-palette.js"></script>
+```
 
-## Userscripts
+Using npm:
 
-Userscripts are loaded and run on every webpage you visit, though you often don't have control of the order in which your userscripts run. For this reason, Web Command Palette provides a global variable and an event you can listen to. In your Userscript, we recommend the following pattern:
+```shell
+$ npm i web-command-palette
+```
 
-````javascript
-// Create a handler that registers your command with the Web Command Palette.
-function registerWithCommandPalette(commandPalette) {
-  const keyCombination = {
-    default: {
-      metaKey: true,
-      shiftKey: true,
-      keyCode: 72,
-    }
-  };
-  const options = {
-    run: () => {
-      alert("Ctrl+Shift+H was pressed!");
-    }
-  }
-  commandPalette.registerCommand(default, options);
-}
+Note: add --save if you are using npm < 5.0.0
 
-// Invoke your handler on the existance of the Web Command Palette library.
-if (window.CommandPalette) {
-  registerWithCommandPalette(window.commandPalette);
-} else {
-  window.addEventListener(
-    "commandpaletteready",
-    () => registerWithCommandPalette(e.details.commandPalette)
-  );
-}
-````
+# Quick Start
 
-## Web Apps
+Web Command Palette abstracts away platform differences by introducing a new notation for modifier keys.
 
-Web Command Palette may already be installed as a userscript or extension on your users' machine. WCP can have flags enabled or disabled, and by default, all versions of WCP installed as a userscript have the "userscript" tag, all versions using a package manager have the "web" tag, and all versions installed as an extension have an "extension" tag. For the best user experience, we will provide the user with the most up-to-date version of WCP between the web and extension versions. The userscript version of WCP will never be used unless a user edits their userscript to force it to load.
+* `mod`: same as the Command key on Apple devices and the Control key most elsewhere.
+* `opt`: same as the Option key on Apple devices and the Alt key most elsewhere.
+* `shift`: same across all platforms.
 
-````javascript
-import { registerCommand } from "web-command-palette";
+```javascript
+import { registerCommands } from "web-command-palette";
 
+registerCommands({
+  // 1
+  "mod+opt+KeyP": (cpEvent) => console.log(cpEvent),
+  
+  // 2
+  "KeyP": (cpEvent) => alert("You pressed P!"),
+  
+  // 3
+  "mod+KeyS": (cpEvent) => {
+    externalObj.save();
+    return {
+      type: "success",
+      message: "Saved successfully",
+    };
+  },
+  
+  // 4
+  "mod+shift+KeyS": (cpEvent) => {
+    cpEvent.initialFeedback({
+      type: "info",
+      message: "Saving to server...",
+    });
+    apiService.obsSave().subscribe(
+      (successResp) => cpEvent.feedback({
+        type: "success",
+        message: "Saved to server successfully",
+      }),
+      (errorResp) => cpEvent.feedback({
+        type: "danger",
+        message: "Error while saving to server",
+      }),
+    );
+  },
+  
+  // 5
+  "KeyV": {
+    when: () => externalObj.isReady(),
+    run: (cpEvent) => alert("Validated"),
+  },
+  
+  // 6
+  "mod+shift+KeyP KeyV": (cpEvent) => alert("Super validated!"),
+});
+```
 
-const keyCombination = {
-  default: {
-    metaKey: true,
-    shiftKey: true,
-    keyCode: 72,
-  }
-};
-const options = {
-  run: () => {
-    alert("Ctrl+Shift+H was pressed!");
-  }
-}
-commandPalette.registerCommand(default, options);
-````
+The above examples highlight the core functionality:
+
+1. Web Command Palette supplies an event object that gives you useful context for how to execute your functionality.
+2. An example where a single key is pressed; modifier keys are not required.
+3. You can respond with a feedback object that will give the WCP-UI plugin feedback to show the user.
+4. You can use the CommandPaletteEvent object passed to your callback to provide feedback to the user in an asynchronous or observer context.
+5. An example of the object syntax, using "when" to see if the command can be ran given your application's state.
+6. An example of the chord syntax for keyboard shortcuts. A chord is a shortcut that requires two sets of keypresses in succession. In WCP, you seperate these sets with a space.
+
