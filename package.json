@@ -1,0 +1,23 @@
+{
+  "name": "web-command-palette",
+  "version": "1.0.0",
+  "description": "Web Command Palette is an API, web extension, UI, and tinkering interface for keyboard shortcuts on the web.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zaccanoy/web-command-palette.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zaccanoy/web-command-palette/issues"
+  },
+  "homepage": "https://github.com/zaccanoy/web-command-palette#readme",
+  "dependencies": {
+    "uuid": "^8.3.0"
+  }
+}
