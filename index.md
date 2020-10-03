@@ -1,5 +1,3 @@
-# Web Command Palette
-
 Web Command Palette gives you the power to create keyboard shortcuts that simply work cross-platform.
 
 ## Examples
