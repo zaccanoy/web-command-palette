@@ -8,7 +8,7 @@ import { NativeShortcut } from "./native-shortcut";
 export function getNativeShortcutFromString(str: string): NativeShortcut {
   const splitStr: string[] = str.split("+");
 
-  const code: string = splitStr.find(
+  const code: string | undefined = splitStr.find(
     (s: string): boolean => s !== "mod" && s !== "opt" && s !== "shift",
   );
 

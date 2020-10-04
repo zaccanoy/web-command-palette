@@ -9,12 +9,10 @@ import {
   isShortcutMap,
 } from "./command";
 import { NativeShortcut } from "./shortcut/native-shortcut";
-import { Shortcut } from "./shortcut/shortcut";
 import {
   getNativeShortcutFromEvent,
   getNativeShortcutFromString,
 } from "./shortcut/shortcut-converters";
-import { exists } from "./util/exists";
 
 /**
  * Represents a command or a map from a native shortcut to a command.
@@ -41,7 +39,7 @@ function addShortcutToMap(
       ? getNativeShortcutFromString(shortcut)
       : shortcut;
 
-  if (exists(map.get(nativeShortcut))) {
+  if (map.get(nativeShortcut) !== undefined) {
     throw Error(
       "You cannot register a command with a keyset that has previously been registered. Either deregister the existing command or choose a different keyset.",
     );
@@ -82,9 +80,9 @@ class CommandPalette {
   private static readonly instance: CommandPalette = new CommandPalette();
 
   /** The currently active chord. */
-  private activeChord: Map<NativeShortcut, Command> = undefined;
+  private activeChord: Map<NativeShortcut, Command> | undefined = undefined;
   /** A map of keyboard shortcuts to commands. */
-  private readonly commands: Map<NativeShortcut, CommandOrMap>;
+  private readonly commands: Map<NativeShortcut, CommandOrMap> = new Map();
 
   /**
    * Constructs a new CommandPalette and attaches an event listener for
@@ -113,9 +111,11 @@ class CommandPalette {
         );
 
         // Get the existing map or create a new one if needed.
-        let shortcutMap: CommandOrMap = this.commands.get(chordInitializer);
-        if (!exists(shortcutMap)) {
-          shortcutMap = new Map<Shortcut, Command>();
+        let shortcutMap: CommandOrMap | undefined = this.commands.get(
+          chordInitializer,
+        );
+        if (shortcutMap === undefined) {
+          shortcutMap = new Map<NativeShortcut, Command>();
           this.commands.set(chordInitializer, shortcutMap);
         } else if (isCommand(shortcutMap)) {
           throw Error(
@@ -123,7 +123,8 @@ class CommandPalette {
           );
         }
 
-        map = shortcutMap;
+        // We don't have to check for undefined, we already did.
+        map = shortcutMap as Map<NativeShortcut, Command>;
       }
 
       addShortcutToMap(this.commands, optKey, options[optKey]);
@@ -136,16 +137,19 @@ class CommandPalette {
    */
   private handleKeyDown(event: KeyboardEvent): void {
     const shortcut: NativeShortcut = getNativeShortcutFromEvent(event);
-    if (exists(this.activeChord)) {
-      const command: Command = this.activeChord.get(shortcut);
-      if (exists(command) && (command.when === undefined || command.when())) {
+    if (this.activeChord !== undefined) {
+      const command: Command | undefined = this.activeChord.get(shortcut);
+      if (
+        command !== undefined &&
+        (command.when === undefined || command.when())
+      ) {
         command.run(event);
       } else {
         this.activeChord = undefined;
       }
     } else {
-      const command: CommandOrMap = this.commands.get(shortcut);
-      if (exists(command)) {
+      const command: CommandOrMap | undefined = this.commands.get(shortcut);
+      if (command !== undefined) {
         /* We only prevent default behavior when the keypress matches a registered command. */
         event.preventDefault();
         if (

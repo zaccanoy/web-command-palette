@@ -9,7 +9,6 @@
     "removeComments": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "outFile": "build/web-command-palette.js",
     "sourceMap": true
   },
   "include": ["src/**/*"],

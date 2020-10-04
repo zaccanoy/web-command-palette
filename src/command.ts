@@ -1,5 +1,4 @@
 import { NativeShortcut } from "./shortcut/native-shortcut";
-import { exists } from "./util/exists";
 
 /**
  * A feedback object that allows the Web Command Palette UI to give the user
@@ -41,10 +40,10 @@ export interface CommandRegistrations {
  * @returns A boolean representing if the element is a CommandOptions object.
  */
 export function isCommandOptions(
-  commandFunctionOrOptions,
+  commandFunctionOrOptions: CommandFunction | CommandOptions,
 ): commandFunctionOrOptions is CommandOptions {
   const commandOptions = commandFunctionOrOptions as CommandOptions;
-  return exists(commandOptions.run) && exists(commandOptions.when);
+  return commandOptions.run !== undefined && commandOptions.when !== undefined;
 }
 
 /**
@@ -55,7 +54,7 @@ export function isCommandOptions(
  * @returns A boolean representing if the element is a CommandFunction.
  */
 export function isCommandFunction(
-  commandFunctionOrOptions,
+  commandFunctionOrOptions: CommandFunction | CommandOptions,
 ): commandFunctionOrOptions is CommandFunction {
   return typeof commandFunctionOrOptions === "function";
 }
