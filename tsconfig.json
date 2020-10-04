@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+
+  "compilerOptions": {
+    "target": "ES2015",
+    "module": "CommonJS",
+    "strict": true,
+    "esModuleInterop": true,
+    "removeComments": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outFile": "build/web-command-palette.js",
+    "sourceMap": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}

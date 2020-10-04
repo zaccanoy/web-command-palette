@@ -1,0 +1,14 @@
+{
+  "extends": ["tslint:all", "tslint-config-prettier"],
+  "linterOptions": {
+    "exclude": ["**/node_modules/**"]
+  },
+  "rules": {
+    "interface-name": false,
+    "only-arrow-functions": false,
+    "file-name-casing": [true, "kebab-case"],
+    "no-inferrable-types": false,
+    "no-void-expression": false,
+    "increment-decrement": false
+  }
+}

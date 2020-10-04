@@ -17,7 +17,9 @@
     "url": "https://github.com/zaccanoy/web-command-palette/issues"
   },
   "homepage": "https://github.com/zaccanoy/web-command-palette#readme",
-  "dependencies": {
-    "uuid": "^8.3.0"
+  "dependencies": {},
+  "devDependencies": {
+    "strict-tslint-config": "^1.0.1",
+    "tslint-config-prettier": "^1.18.0"
   }
 }
