@@ -2,15 +2,22 @@
   "$schema": "https://json.schemastore.org/tsconfig",
 
   "compilerOptions": {
-    "target": "ES2015",
+    "declaration": true,
+    "declarationDir": "./dist",
     "module": "CommonJS",
+    "target": "ES2015",
     "strict": true,
     "esModuleInterop": true,
     "removeComments": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "outDir": "./dist"
+  },
+  "typedocOptions": {
+    "mode": "modules",
+    "out": "docs"
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "exclude": ["node_modules", "**/*.spec.ts", "dist"]
 }

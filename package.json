@@ -1,29 +1,35 @@
 {
   "name": "web-command-palette",
   "version": "1.0.0",
-  "description": "Web Command Palette is an API, web extension, UI, and tinkering interface for keyboard shortcuts on the web.",
-  "main": "index.js",
+  "description": "Web Command Palette is an API for keyboard shortcuts on the web.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc"
+    "build": "tsc",
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zaccanoy/web-command-palette.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Zac Canoy <zaccanoy@gmail.com>",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/zaccanoy/web-command-palette/issues"
   },
   "homepage": "https://github.com/zaccanoy/web-command-palette#readme",
   "dependencies": {},
   "devDependencies": {
+    "@types/jest": "^26.0.14",
+    "jest": "^26.4.2",
     "prettier": "^2.1.2",
     "strict-tslint-config": "^1.0.1",
+    "ts-jest": "^26.4.1",
     "tslint": "^6.1.3",
     "tslint-config-prettier": "^1.18.0",
+    "typedoc": "^0.19.2",
     "typescript": "^4.0.3"
   }
 }
