@@ -1,6 +1,4 @@
-# Web Command Palette
-
-Web Command Palette is an API for keyboard shortcuts on the web.
+![Web Command Palette Hero](https://repository-images.githubusercontent.com/299695693/89b2f580-0696-11eb-9351-5a4b832d73a0)
 
 # Installation
 
