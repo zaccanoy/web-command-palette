@@ -7,7 +7,7 @@ Web Command Palette is an API for keyboard shortcuts on the web.
 Using npm:
 
 ```shell
-$ npm i web-command-palette
+$ npm i @web-command-palette/web-command-palette
 ```
 
 # Quick Start
