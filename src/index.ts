@@ -1,13 +1,15 @@
 import {
   Command,
   CommandFunction,
+  isCommand,
+  isShortcutMap,
+} from "./command/command";
+import {
   CommandOptions,
   CommandRegistrations,
-  isCommand,
   isCommandFunction,
   isCommandOptions,
-  isShortcutMap,
-} from "./command";
+} from "./command/command-registration";
 import { NativeShortcut } from "./shortcut/native-shortcut";
 import {
   getNativeShortcutFromEvent,

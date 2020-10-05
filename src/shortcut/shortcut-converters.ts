@@ -1,4 +1,5 @@
 import { getPlatform, Platform } from "../util/platform";
+
 import { NativeShortcut } from "./native-shortcut";
 
 /**
@@ -6,6 +7,9 @@ import { NativeShortcut } from "./native-shortcut";
  * @param str The string to get the native shortcut from.
  */
 export function getNativeShortcutFromString(str: string): NativeShortcut {
+  if (str === "") {
+    throw new Error("Shortcut string cannot be empty.");
+  }
   const splitStr: string[] = str.split("+");
 
   const code: string | undefined = splitStr.find(
